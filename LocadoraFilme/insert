@@ -1,0 +1,126 @@
+CREATE TABLE cliente (
+	cpf bigint,
+	nome varchar(70) not null,	
+	estado varchar(50) not null,
+	cidade varchar(50) not null,
+	bairro varchar(50) not null,
+	logradouro varchar(50) not null,
+	numero bigint not null,
+	complemento varchar(10) ,
+	cep int not null,
+	constraint pk1 primary key(cpf)
+);
+
+
+CREATE TABLE funcionario(
+	cpf_func bigint, 
+	rg bigint not null UNIQUE,
+	nome varchar(70) not null,
+	salario float not null,
+	estado varchar(50) not null,
+	cidade varchar(50) not null,
+	bairro varchar(50) not null,
+	logradouro varchar(50) not null,
+	num int not null, 
+	complemento varchar(10),
+	cep int not null,
+	constraint pk_func primary key(cpf_func)
+);
+
+
+CREATE TABLE dvdfilme( 
+	id_dvd serial, 
+	titulo varchar(50) not null,
+	sub_titulo varchar(50),
+	ano_lancamento int not null,
+	sinopse varchar(50) not null,
+	valor_aluguel float not null,
+	produtora varchar(50) not null,
+	titulo_original varchar(50) not null,
+	status int CHECK(status=1 or status=0) not null,
+	constraint pk_1	primary key (id_dvd)
+);
+
+CREATE TABLE categoria(
+	nome_categoria varchar(50) not null,
+	id_categoria int,
+	constraint pk1_categoria primary key(id_categoria)
+);
+
+
+
+CREATE TABLE ator(
+	nome_ator varchar(70) not null,
+	id_ator serial,
+	constraint pk_ator primary key(id_ator)
+);
+
+
+
+CREATE TABLE diretor(
+	id_diretor serial,
+	nome_diretor varchar(70) not null,	
+	constraint pk_diretor primary key(id_diretor)
+);
+
+
+
+
+CREATE TABLE elenco (
+	id_ator int,
+	id_dvd int,
+	constraint fk_elenco  foreign key(id_ator) references ator(id_ator) ON UPDATE CASCADE,
+	constraint fk2_elenco  foreign key(id_dvd) references DVDFILME(id_dvd) ON UPDATE CASCADE
+);
+
+
+CREATE TABLE aluguel(
+	id_dvd int,
+	cpf_func bigint,
+	cpf_cliente bigint,
+	id_aluguel serial,
+	data_aluguel date not null,
+	data_devolucao date not null,
+	data_entregue date,
+	multa float,
+	situacao varchar not null,
+	constraint fk1_a foreign key(id_dvd) references DVDFILME(id_dvd) ON UPDATE CASCADE,
+	constraint fk2_a foreign key(cpf_func) references funcionario(cpf_func) ON UPDATE CASCADE,
+	constraint fk3_a foreign key(cpf_cliente) references cliente(cpf) ON UPDATE CASCADE,
+	constraint pk_a primary key(id_aluguel)
+);
+
+
+CREATE TABLE cat_filme(
+	id_categoria int,
+	id_dvd int,
+	constraint fk_cf foreign key(id_categoria) references categoria(id_categoria) ON UPDATE CASCADE,
+	constraint fk2_cf foreign key(id_dvd) references DVDFILME(id_dvd) ON UPDATE CASCADE
+
+);
+
+
+
+
+CREATE TABLE direcao (
+	id_diretor int,
+	id_dvd int,
+	constraint fk_d foreign key(id_diretor) references diretor(id_diretor) ON UPDATE CASCADE,
+	constraint fk2_d foreign key(id_dvd) references DVDFILME(id_dvd) ON UPDATE CASCADE
+);
+
+
+
+CREATE TABLE telefone(
+	telefone bigint not null,
+	cpf_cliente bigint,
+	constraint fk_t foreign key (cpf_cliente) references Cliente(cpf) ON UPDATE CASCADE
+);
+
+
+
+---------------------------------------------------------------------------------------------------------------
+
+
+
+
